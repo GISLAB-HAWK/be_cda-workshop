@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# private account settings
+/accounts.yaml
+
+# data output folder
+/data

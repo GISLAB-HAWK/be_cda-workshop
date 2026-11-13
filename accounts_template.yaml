@@ -1,0 +1,6 @@
+# Do not change this file!
+# Instead copy this template file 'accounts_template.yaml' to 'accounts.yaml' and insert your url, username and password there. 
+
+tubedb: {url: 'TUBEDB_URL_AND_PORT', user: 'TUBEDB_USER', password: 'TUBEDB_PASSWORD'}
+
+
