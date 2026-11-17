@@ -1,4 +1,4 @@
-# Timeseries request, download an save to file.
+# Timeseries with ecological index processing request, download an save to file.
 
 # load tubedb
 source('scripts/0_init.R')

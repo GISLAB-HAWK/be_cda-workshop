@@ -1,4 +1,4 @@
-# Timeseries request, download an save to file.
+# Timeseries request, download and save to file.
 
 # load tubedb
 source('scripts/0_init.R')

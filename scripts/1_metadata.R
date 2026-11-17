@@ -1,4 +1,4 @@
-# Query TubeDB metadata and write to file.
+# Query TubeDB metadata and write metadata to file.
 
 
 # load tubedb
