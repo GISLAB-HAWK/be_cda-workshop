@@ -25,13 +25,13 @@ library(rTubeDB)
 
 
 # open TubeDB server connection by accounts file
-if(!require('yalm')) install.packages('yalm')
+if(!require('yaml')) install.packages('yaml')
 accounts_file_path <- paste0(getwd(), '/', 'accounts.yaml')
 accounts_file_template_path <- paste0(getwd(), '/', 'accounts_template.yaml')
 if(!file.exists(accounts_file_path)) {
   warning('Missing accounts file at ', accounts_file_path, '\n', 'You may start by copying the template file ', accounts_file_template_path, ' to ', accounts_file_path, '\n and insert there your usernames and passwords.')
 }
-accounts <- yalm::read_yaml(accounts_file_path)
+accounts <- yaml::read_yaml(accounts_file_path)
 rm(accounts_file_path, accounts_file_template_path)
 tubedb <- rTubeDB::TubeDB(url=accounts$tubedb$url, user=accounts$tubedb$user, password=accounts$tubedb$password)
 rm(accounts)
