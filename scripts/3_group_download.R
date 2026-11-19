@@ -14,11 +14,11 @@ if(!dir.exists(timeseries_path)) {
 # get plots of one region as data.frame
 plotDF <- rTubeDB::query_region_plots(tubedb, 'BE')
 
-# get all plots from plot group 'HEG'
-hegDF <- subset(plotDF, general_station == 'HEG')
+# get all plots from plot group 'SEG'
+segDF <- subset(plotDF, general_station == 'SEG')
 
 # get plot names
-plots <- hegDF$id
+plots <- segDF$id
 
 sensors <- c('Ta_200', 'Ts_10')
 
@@ -33,30 +33,37 @@ tsDF <- rTubeDB::query_timeseries(
   quality = 'empirical',
   interpolated = FALSE,
 )
-write.csv(tsDF, paste0(timeseries_path, 'timeseries__HEG__Ta_200__Ts_10.csv'), row.names = FALSE, quote = FALSE)
 
-# get timeseries at HEG01 only
-heg01TsDF <- subset(tsDF, plot == 'HEG01')
+# write time series to file
+rTubeDB::write_timeseries(
+  tsDF, 
+  paste0(timeseries_path, 'timeseries__SEG__Ta_200__Ts_10.csv')
+)
+
+# get timeseries at SEG41 only
+seg01TsDF <- subset(tsDF, plot == 'SEG41')
 
 # show timeseries diagram
 plot(
-  heg01TsDF$datetime, 
-  heg01TsDF$Ta_200,
+  seg01TsDF$datetime, 
+  seg01TsDF$Ta_200,
   type = 'l', 
   col = 'red',
   xlab = 'Date', 
   ylab = 'Temperature (°C)',
-  main = 'HEG01 – Ta_200 and Ts_10'
+  main = 'SEG41 – Ta_200 and Ts_10'
 )
 
+# add Ts_10 line
 lines(
-  heg01TsDF$datetime, 
-  heg01TsDF$Ts_10, 
+  seg01TsDF$datetime, 
+  seg01TsDF$Ts_10, 
   col = 'blue'
 )
 
+# add legend
 legend(
-  'topleft', 
+  'topright', 
   legend = c('Ta_200', 'Ts_10'),
   col = c('red', 'blue'), 
   lty = 1
