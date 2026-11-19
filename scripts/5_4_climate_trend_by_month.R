@@ -116,12 +116,12 @@ legend(
 
 # slope number
 mtext(
-  sprintf('Theil-Sen: %+.2f °C/year (conf.int %+.2f to %+.2f)',
+  sprintf('Temperature trend: %+.2f °C/year (conf.int %+.2f to %+.2f)',
           slope_per_year, slope_lower_per_year, slope_upper_per_year),
   side = 3, line = 1.2, adj = 0, cex = 0.9, font = 3
 )
 mtext(
-  sprintf('Since 2014: %+.2f °C/year (conf.int %+.2f to %+.2f)',
+  sprintf('Temperature trend since 2014: %+.2f °C/year (conf.int %+.2f to %+.2f)',
           slope_per_year_2014, slope_lower_per_year_2014, slope_upper_per_year_2014),
   side = 3, line = 0.2, adj = 0, cex = 0.9, font = 3
 )
