@@ -1,4 +1,6 @@
-# Install TubeDB R-package and open tubedb  connection.
+# Setup script (called at the beginning of each tutorial script)
+#
+# Install TubeDB R-package and open TubeDB connection.
 
 
 # Install rTubeDB package and automatically install updated versions.

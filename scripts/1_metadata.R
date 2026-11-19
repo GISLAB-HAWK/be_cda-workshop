@@ -1,3 +1,5 @@
+# Obtain metadata about the Climate Stations.
+#
 # Query TubeDB metadata and write metadata to file.
 
 

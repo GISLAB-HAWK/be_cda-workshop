@@ -1,3 +1,7 @@
+# Calculate temperature trend from the measured timeseries at one location.
+#
+# Based on years
+#
 # Timeseries request and calculate year based linear climate trend.
 
 # load tubedb
@@ -18,8 +22,9 @@ tsDF <- rTubeDB::query_timeseries(
 )
 
 # show time series
-plot(tsDF$datetime, tsDF$Ta_200)
+#plot(tsDF$datetime, tsDF$Ta_200)
 
+# fit linear model to year time series
 tsDF_clean <- na.omit(tsDF)
 fit <- lm(Ta_200 ~ year, data = tsDF_clean)
 summary(fit)
@@ -52,13 +57,6 @@ mtext(slope_label, side = 3, line = 1.2, adj = 0, cex = 0.9, font = 3)
 
 
 # subset to trend without data before 2014
-
-tsDF_clean <- na.omit(tsDF)
-fit <- lm(Ta_200 ~ year, data = tsDF_clean)
-summary(fit)
-tsDF$trend <- predict(fit, newdata = tsDF)
-
-
 tsDF_subset <- tsDF_clean[tsDF_clean$year >= 2014, ]
 fit_subset <- lm(Ta_200 ~ year, data = tsDF_subset)
 summary(fit_subset)
@@ -85,12 +83,12 @@ legend(
 
 # add 2014 linear trend slope number
 slope_per_year_2014  <- coef(fit_subset)['year']
-slope_label_2014 <- sprintf('Temperature trend since 2014: %+.2f °C per year', slope_per_year_2014)
+slope_label_2014 <- sprintf('Temperature trend since 2014: %+.2f °K per year', slope_per_year_2014)
 mtext(slope_label_2014, side = 3, line = 0.2, adj = 0, cex = 0.9, font = 3)
 
 # Timeseries of residuals: if there is a pattern, linearity is questionable
-plot(tsDF_clean$year, residuals(fit), type = 'l', main = 'Residuals')
-abline(h = 0, col = 'red', lty = 2)
+#plot(tsDF_clean$year, residuals(fit), type = 'l', main = 'Residuals')
+#abline(h = 0, col = 'red', lty = 2)
 
 
 

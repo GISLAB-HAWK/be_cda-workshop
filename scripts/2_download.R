@@ -1,3 +1,5 @@
+# Obtain climate timeseries from one location.
+#
 # Timeseries request, download and save to file.
 
 # load tubedb

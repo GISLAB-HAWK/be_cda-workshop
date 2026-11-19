@@ -1,4 +1,8 @@
-# Timeseries request and calculate STL based linear climate trend.
+# Calculate temperature trend from the measured timeseries at one location.
+#
+# Based on days
+#
+# Timeseries request and calculate decompose based linear climate trend.
 
 # load tubedb
 source('scripts/0_init.R')
@@ -18,7 +22,7 @@ tsDF <- rTubeDB::query_timeseries(
 
 # remove NAs at the beginning and end
 first_valid <- min(which(complete.cases(tsDF$Ta_200)))
-last_valid  <- max(which(complete.cases(tsDF$Ta_200)))
+last_valid <- max(which(complete.cases(tsDF$Ta_200)))
 tsDF <- tsDF[first_valid:last_valid, ]
 
 # take largest time block without NA (needed if interpolation could not fill all gaps)
@@ -33,17 +37,13 @@ tsDF <- tsDF[first_valid:last_valid, ]
 # show time series
 #plot(tsDF$datetime, tsDF$Ta_200)
 
-# sensonality decomposition by year (integer needed)
-frequency <- 365
-
+# sensonality decomposition by year
+frequency <- 365.24
 ts_obj <- ts(tsDF$Ta_200, frequency = frequency)
+decomp <- decompose(ts_obj)
 
-# STL decomposition
-decomp <- stl(ts_obj, s.window = "periodic", robust = TRUE)
-trend_dt <- data.frame(
-  datetime = tsDF$datetime,
-  trend    = as.numeric(decomp$time.series[, "trend"])
-)
+# calculate linear trend from decomposed trend
+trend_dt <- data.frame(datetime = tsDF$datetime, trend = decomp$trend)
 trend_dt <- na.omit(trend_dt)
 fit <- lm(trend ~ datetime, data = trend_dt)
 summary(fit)
@@ -59,7 +59,7 @@ plot(
   main = paste0(location, ' Ta_200')
 )
 
-# add STL trend to diagram
+# add decomposed trend to diagram
 lines(
   trend_dt$datetime, 
   trend_dt$trend, 
@@ -82,14 +82,16 @@ slope_per_year <- slope_per_sec * 365.24 * 24 * 3600
 slope_label <- sprintf('Temperature trend: %+.2f °K per year', slope_per_year)
 mtext(slope_label, side = 3, line = 1.2, adj = 0, cex = 0.9, font = 3)
 
-# subset trend without data before 2014
+
+# subset decomposed to trend without data before 2014
 trend_dt_2014 <- trend_dt[as.Date(trend_dt$datetime) >= as.Date("2014-01-01"), ]
 
-# calculate 2014 linear trend from STL trend
+# calculate 2014 linear trend from decomposed trend
 fit_2014 <- lm(trend ~ datetime, data = trend_dt_2014)
 
 # predict 2014 linear trend to full time range
 trend_2014_full <- predict(fit_2014, newdata = trend_dt)
+
 
 # add 2014 linear trend to diagram
 lines(
@@ -103,7 +105,7 @@ lines(
 # add diagram legend
 legend(
   'topright',
-  legend = c('Ta_200', 'STL Trend', 'Trend linear', 'Trend linear 2014+'),
+  legend = c('Ta_200', 'Trend', 'Trend linear', 'Trend linear 2014+'),
   col    = c('grey50', 'blue', 'red', 'darkgreen'),
   lty    = c(1, 1, 2, 3),
   lwd    = c(1, 2, 2, 2),
@@ -116,5 +118,8 @@ slope_label_2014 <- sprintf('Temperature trend since 2014: %+.2f °K per year', 
 mtext(slope_label_2014, side = 3, line = 0.2, adj = 0, cex = 0.9, font = 3)
 
 # Timeseries of residuals: if there is a pattern, linearity is questionable
-plot(trend_dt$datetime, residuals(fit), type = 'l', main = 'Residuals')
-abline(h = 0, col = 'red', lty = 2)
+#plot(trend_dt$datetime, residuals(fit), type = 'l', main = 'Residuals')
+#abline(h = 0, col = 'red', lty = 2)
+
+
+
