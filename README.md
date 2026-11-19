@@ -31,3 +31,4 @@ Follow these steps to prepare your workspace:
 - **`accounts.yaml`** - Your personal TubeDB credentials (copy from `accounts_template.yaml`)
 - **`accounts_template.yaml`** - Template file for TubeDB credentials
 - **`be_cda-workshop.Rproj`** - RStudio project file
+- **`rTubeDB_1.4.tar.gz`** - rTubeDB R-package
